@@ -33,6 +33,11 @@ class CILogViewer {
     const FILE_PATH_PATTERN = APPPATH . "/logs/log-*.php";
     const LOG_FOLDER_PREFIX = APPPATH . "/logs";
 
+    const LOG_VIEW_FILE_FOLDER = APPPATH . "/views/cilogviewer";
+    const LOG_VIEW_FILE_NAME = "logs.php";
+    const LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/" . self::LOG_VIEW_FILE;
+    const CI_LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/logs";
+
 
     public function __construct() {
         $this->init();
@@ -48,17 +53,13 @@ class CILogViewer {
         //initiate Code Igniter Instance
         $this->CI = &get_instance();
 
-        $destinationFolder = APPPATH . "/views/cilogviewer";
-        $logfileName = "logs.php";
-        $filename = $destinationFolder . "/" . $logfileName;
-
         //create the view file so that CI can find it
-        if(!file_exists($filename)) {
+        if(!file_exists(self::LOG_VIEW_FILE_PATH)) {
 
-            if(!is_dir($destinationFolder))
-                mkdir($destinationFolder);
+            if(!is_dir(self::LOG_VIEW_FILE_FOLDER))
+                mkdir(self::LOG_VIEW_FILE_FOLDER);
 
-            file_put_contents($filename, file_get_contents($logfileName, FILE_USE_INCLUDE_PATH));
+            file_put_contents(self::LOG_VIEW_FILE_PATH, file_get_contents(self::LOG_VIEW_FILE_NAME, FILE_USE_INCLUDE_PATH));
         }
     }
 
@@ -84,14 +85,14 @@ class CILogViewer {
             $data['logs'] = [];
             $data['files'] = [];
             $data['currentFile'] = "";
-            return $this->CI->load->view("logs/index", $data, true);
+            return $this->CI->load->view(self::CI_LOG_VIEW_FILE_PATH, $data, true);
         }
 
         $logs = $this->processLogs($this->getLogs($currentFile));
         $data['logs'] = $logs;
         $data['files'] =  $files;
         $data['currentFile'] = basename($currentFile);
-        return $this->CI->load->view("logs/index", $data, true);
+        return $this->CI->load->view(self::CI_LOG_VIEW_FILE_PATH, $data, true);
     }
 
 

@@ -52,7 +52,7 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <h1><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> CodeIgniter Log Viewer</h1>
-            <p class="text-muted"><i>by SeunMatt</i></p>
+            <p class="text-muted"><i>by <a href="https://github.com/SeunMatt" target="_blank">Seun Matt</a></i></p>
             <div class="list-group">
                 <?php if(empty($files)): ?>
                   <a class="list-group-item liv-active">No Log Files Found</a>
