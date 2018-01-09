@@ -41,17 +41,24 @@ class CILogViewer {
 
     private function init() {
 
-        if(!function_exists(get_instance())) {
+        if(!function_exists("get_instance")) {
             throw new \Exception("This library works in a Code Igniter Project/Environment");
         }
 
+        //initiate Code Igniter Instance
         $this->CI = &get_instance();
 
-        $destination = APPPATH . "/views/cilogviewer/logs.php";
+        $destinationFolder = APPPATH . "/views/cilogviewer";
+        $logfileName = "logs.php";
+        $filename = $destinationFolder . "/" . $logfileName;
 
-        if(!file_exists($destination)) {
-            $src = 'view/cilogviewer.php';
-            file_put_contents($destination, file_get_contents($src));
+        //create the view file so that CI can find it
+        if(!file_exists($filename)) {
+
+            if(!is_dir($destinationFolder))
+                mkdir($destinationFolder);
+
+            file_put_contents($filename, file_get_contents($logfileName, FILE_USE_INCLUDE_PATH));
         }
     }
 
