@@ -35,8 +35,11 @@ class CILogViewer {
 
     const LOG_VIEW_FILE_FOLDER = APPPATH . "/views/cilogviewer";
     const LOG_VIEW_FILE_NAME = "logs.php";
-    const LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/" . self::LOG_VIEW_FILE;
-    const CI_LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/logs";
+    const LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/" . self::LOG_VIEW_FILE_NAME;
+    const CI_LOG_VIEW_FILE_PATH = "cilogviewer/logs";
+
+    const MAX_LOG_SIZE = 52428800; //50MB
+    const MAX_STRING_LENGTH = 300; //300 chars
 
 
     public function __construct() {
@@ -70,7 +73,20 @@ class CILogViewer {
      * @param $fileName optional base64_encoded filename of the log file to process.
      * @returns the parse view file content as a string that can be echoed
      * */
-    public function showLogs($fileName = null) {
+    public function showLogs() {
+
+        if($this->CI->input->get("del")) {
+            $this->deleteFiles(base64_decode($this->CI->input->get("del")));
+            redirect($this->CI->uri->uri_string());
+            return;
+        }
+
+        if($f = $this->CI->input->get("dl")) {
+            $this->downloadFile(base64_decode($f));
+            return;
+        }
+
+        $fileName = ($this->CI->input->get("f")) ? $this->CI->input->get("f") : null;
 
         //get the log files from the log directory
         $files = $this->getFiles();
@@ -79,7 +95,7 @@ class CILogViewer {
             $currentFile = self::LOG_FOLDER_PREFIX . "/". base64_decode($fileName);
         }
         else if(is_null($fileName) && !empty($files)) {
-            $currentFile = self::LOG_FOLDER_PREFIX."/" . $files[0];
+            $currentFile = self::LOG_FOLDER_PREFIX. "/" . $files[0];
         }
         else {
             $data['logs'] = [];
@@ -96,7 +112,18 @@ class CILogViewer {
     }
 
 
+    /*
+     * This function will process the logs. Extract the log level, icon class and other information
+     * from each line of log and then arrange them in another array that is returned to the view for processing
+     *
+     * @params logs. The raw logs as read from the log file
+     * @return array. An [[], [], [] ...] where each element is a processed log line
+     * */
     private function processLogs($logs) {
+
+        if(is_null($logs)) {
+            return null;
+        }
 
         $superLog = [];
 
@@ -108,13 +135,22 @@ class CILogViewer {
             if(!empty($logLineStart)) {
                 //this is actually the start of a new log and not just another line from previous log
                 $level = $this->getLogLevel($logLineStart);
-                array_push($superLog, [
+                $data = [
                     "level" => $level,
                     "date" => $this->getLogDate($logLineStart),
                     "icon" => self::$levelsIcon[$level],
                     "class" => self::$levelClasses[$level],
-                    "content" => $log
-                ]);
+                ];
+
+                if(strlen($log) > self::MAX_STRING_LENGTH) {
+                    $data['content'] = substr($log, 0, self::MAX_STRING_LENGTH);
+                    $data["extra"] = substr($log, (self::MAX_STRING_LENGTH + 1));
+                } else {
+                    $data["content"] = $log;
+                }
+
+                array_push($superLog, $data);
+
             } else if(!empty($superLog)) {
                 //this log line is a continuation of previous logline
                 //so let's add them as extra
@@ -169,10 +205,14 @@ class CILogViewer {
     /*
      * returns an array of the file contents
      * each element in the array is a line in the file
-     *
+     * @returns array | each line of file contents is an entry in the returned array.
+     * @params complete fileName
      * */
-    private function getLogs($filename) {
-        return file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    private function getLogs($fileName) {
+        $size = filesize($fileName);
+        if(!$size || $size > self::MAX_LOG_SIZE)
+            return null;
+        return file($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     }
 
 
@@ -197,6 +237,40 @@ class CILogViewer {
             }
         }
         return array_values($files);
+    }
+
+    /*
+     * Delete one or more log file in the logs directory
+     * @param filename. It can be all - to delete all log files - or specific for a file
+     * */
+    private function deleteFiles($fileName) {
+
+        if($fileName == "all") {
+            array_map("unlink", glob(self::FILE_PATH_PATTERN));
+        }
+        else {
+            unlink(self::LOG_FOLDER_PREFIX . "/" . $fileName);
+        }
+        return;
+    }
+
+    /*
+     * Download a particular file to local disk
+     * @param $fileName
+     * */
+    private function downloadFile($fileName) {
+        $file = self::LOG_FOLDER_PREFIX . "/" . $fileName;
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        }
     }
 
 
