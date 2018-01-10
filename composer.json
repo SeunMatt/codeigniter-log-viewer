@@ -1,9 +1,9 @@
 {
-  "name": "seunmatt/cilogviewer",
-  "description": "This is a simple Log Viewer for viewing Code Igniter logs on the browser",
+  "name": "seunmatt/codeigniter-log-viewer",
+  "description": "This is a simple Log Viewer for viewing Code Igniter log files on the browser",
   "keywords": ["Code Igniter", "Log Viewer", "PHP"],
   "license": "MIT",
-  "github": "https://github.com/SeunMatt/cilogviewer",
+  "github": "https://github.com/SeunMatt/codeigniter-log-viewer",
   "authors": [
     {
       "name": "Seun Matt",
@@ -16,11 +16,6 @@
   "autoload": {
     "psr-4": {
       "CILogViewer\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
     }
   }
 }
