@@ -19,7 +19,7 @@ Composer Installation
 Execute:
 
 ```
-composer install seunmatt/codeigniter-log-viewer
+composer require seunmatt/codeigniter-log-viewer
 ```
 
 Controller Integration
