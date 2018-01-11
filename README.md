@@ -28,7 +28,7 @@ Controller Integration
 
 All that is required is to execute the `showLogs()` method in a Controller that is mapped to a route:
 
-A typical Controller *(LogViewerController)* will have the following content:
+A typical Controller *(LogViewerController.php)* will have the following content:
 
 ```php
 private $logViewer;
@@ -47,7 +47,7 @@ public function index() {
 Then the route *(application/config/routes.php)* can be configured thus:
 
 ```php
-$route['logs'] = "logViewer/index";
+$route['logs'] = "logViewerController/index";
 ```
 
 And that's all! If you visit `/logs` on your browser 
