@@ -13,6 +13,9 @@ defined('APPPATH') OR exit('Not a Code Igniter Environment');
 class CILogViewer {
 
     private $CI;
+    private $log_file_extension;
+    private $log_file_path;
+    private $log_path_pattern;
 
     private static $levelsIcon = [
         'INFO' => 'glyphicon glyphicon-info-sign',
@@ -56,6 +59,10 @@ class CILogViewer {
         //initiate Code Igniter Instance
         $this->CI = &get_instance();
 
+        $this->log_file_extension = $this->CI->config->item('log_file_extension') === '' ? 'php' : $this->CI->config->item('log_file_extension');
+        $this->log_file_path =  $this->CI->config->item('log_path') === '' ? APPPATH.'/logs/' : $this->CI->config->item('log_path');
+        $this->log_path_pattern = $this->log_file_path . 'log-*.' . $this->log_file_extension;
+
         //create the view file so that CI can find it
         if(!file_exists(self::LOG_VIEW_FILE_PATH)) {
 
@@ -92,10 +99,10 @@ class CILogViewer {
         $files = $this->getFiles();
 
         if(!is_null($fileName)) {
-            $currentFile = self::LOG_FOLDER_PREFIX . "/". base64_decode($fileName);
+            $currentFile = $this->log_file_path . base64_decode($fileName);
         }
         else if(is_null($fileName) && !empty($files)) {
-            $currentFile = self::LOG_FOLDER_PREFIX. "/" . $files[0];
+            $currentFile = $this->log_file_path . $files[0];
         }
         else {
             $data['logs'] = [];
@@ -227,7 +234,7 @@ class CILogViewer {
     private function getFiles($basename = true)
     {
 
-        $files = glob(self::FILE_PATH_PATTERN);
+        $files = glob($this->log_path_pattern);
 
         $files = array_reverse($files);
         $files = array_filter($files, 'is_file');
@@ -246,10 +253,10 @@ class CILogViewer {
     private function deleteFiles($fileName) {
 
         if($fileName == "all") {
-            array_map("unlink", glob(self::FILE_PATH_PATTERN));
+            array_map("unlink", glob($this->log_path_pattern));
         }
         else {
-            unlink(self::LOG_FOLDER_PREFIX . "/" . $fileName);
+            unlink($this->log_file_path . $fileName);
         }
         return;
     }
@@ -259,7 +266,7 @@ class CILogViewer {
      * @param $fileName
      * */
     private function downloadFile($fileName) {
-        $file = self::LOG_FOLDER_PREFIX . "/" . $fileName;
+        $file = $this->log_file_path . $fileName;
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
