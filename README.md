@@ -60,6 +60,9 @@ and other security reasons.
 
 Contributions
 =============
+
+**Love this library? You can support by [buying me a coffee](http://wallet.ng/pay/ossmatt)** :coffee:
+
 Found a bug? Kindly create an issue for it. 
 
 Want to contribute? Submit your pull-request
@@ -68,7 +71,7 @@ Remember to :star: star the repo and share with friends
 
 Author
 ======
-Made with :heart: by [Seun Matt](https://www.linkedin.com/in/seun-matt-06351955)
+Made with :heart: by [Seun Matt](https://smattme.com)
 
 LICENSE
 =======
