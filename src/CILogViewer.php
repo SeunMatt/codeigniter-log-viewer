@@ -13,9 +13,6 @@ defined('APPPATH') OR exit('Not a Code Igniter Environment');
 class CILogViewer {
 
     private $CI;
-    private $log_file_extension;
-    private $log_file_path;
-    private $log_path_pattern;
 
     private static $levelsIcon = [
         'INFO' => 'glyphicon glyphicon-info-sign',
@@ -33,17 +30,33 @@ class CILogViewer {
     const LOG_LINE_START_PATTERN = "/((INFO)|(ERROR)|(DEBUG)|(ALL))[\s-\d:]+(-->)/";
     const LOG_DATE_PATTERN = "/(\d{4,}-[\d-:]{2,})\s([\d:]{2,})/";
     const LOG_LEVEL_PATTERN = "/^((ERROR)|(INFO)|(DEBUG))/";
-    const FILE_PATH_PATTERN = APPPATH . "/logs/log-*.php";
-    const LOG_FOLDER_PREFIX = APPPATH . "/logs";
 
+    //this is the path (folder) on the system where the log files are stored
+    private $logFolderPath;
+
+    //this is the pattern to pick all log files in the $logFilePath
+    private $logFilePattern;
+
+    private $fullLogFilePath = ""; //this is a combination of the LOG_FOLDER_PATH and LOG_FILE_PATTERN
+
+    /**
+     * Here we define the paths for the view file
+     * that's used by the library to present logs on the UI
+    */
     const LOG_VIEW_FILE_FOLDER = APPPATH . "/views/cilogviewer";
     const LOG_VIEW_FILE_NAME = "logs.php";
     const LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/" . self::LOG_VIEW_FILE_NAME;
+
+    //this is the name of the view file passed to CI load->view()
     const CI_LOG_VIEW_FILE_PATH = "cilogviewer/logs";
 
     const MAX_LOG_SIZE = 52428800; //50MB
     const MAX_STRING_LENGTH = 300; //300 chars
 
+    /**
+     * These are the constants representing the
+     * various API commands there are
+     */
     private const API_QUERY_PARAM = "api";
     private const API_FILE_QUERY_PARAM = "f";
     private const API_LOG_STYLE_QUERY_PARAM = "sline";
@@ -56,6 +69,11 @@ class CILogViewer {
     }
 
 
+    /**
+     * Bootstrap the library
+     * sets the configuration variables
+     * @throws \Exception
+     */
     private function init() {
 
         if(!function_exists("get_instance")) {
@@ -65,9 +83,12 @@ class CILogViewer {
         //initiate Code Igniter Instance
         $this->CI = &get_instance();
 
-        $this->log_file_extension = $this->CI->config->item('log_file_extension') === '' ? 'php' : $this->CI->config->item('log_file_extension');
-        $this->log_file_path =  $this->CI->config->item('log_path') === '' ? APPPATH.'/logs/' : $this->CI->config->item('log_path');
-        $this->log_path_pattern = $this->log_file_path . 'log-*.' . $this->log_file_extension;
+        //configure the log folder path and the file pattern for all the logs in the folder
+        $this->logFolderPath =  !is_null($this->CI->config->item('log_folder_path')) ? rtrim($this->CI->config->item('log_folder_path'), "/") : APPPATH . "/logs";
+        $this->logFilePattern = !is_null($this->CI->config->item('log_file_pattern')) ? $this->CI->config->item('log_file_pattern') : "log-*.php";
+
+        //concatenate to form Full Log Path
+        $this->fullLogFilePath = $this->logFolderPath . "/" . $this->logFilePattern;
 
         //create the view file so that CI can find it
         if(!file_exists(self::LOG_VIEW_FILE_PATH)) {
@@ -100,7 +121,7 @@ class CILogViewer {
         }
 
         if(!is_null($this->CI->input->get(self::API_QUERY_PARAM))) {
-            return $this->processAPIRequets($this->CI->input->get(self::API_QUERY_PARAM));
+            return $this->processAPIRequests($this->CI->input->get(self::API_QUERY_PARAM));
         }
 
         //it will either get the value of f or return null
@@ -111,10 +132,10 @@ class CILogViewer {
 
         //let's determine what the current log file is
         if(!is_null($fileName)) {
-            $currentFile = $this->log_file_path . base64_decode($fileName);
+            $currentFile = $this->logFolderPath . "/" . base64_decode($fileName);
         }
         else if(is_null($fileName) && !empty($files)) {
-            $currentFile = $this->log_file_path . $files[0];
+            $currentFile = $this->logFolderPath . "/" . $files[0];
         } else {
             $currentFile = null;
         }
@@ -146,7 +167,7 @@ class CILogViewer {
     }
 
 
-    private function processAPIRequets($command) {
+    private function processAPIRequests($command) {
 
         if($command === self::API_CMD_LIST) {
             //respond with a list of all the files
@@ -175,7 +196,6 @@ class CILogViewer {
             $response["status"] = false;
             $response["error"]["message"] = "Unsupported Query Command [" . $command . "]";
             $response["error"]["code"] = 400;
-            $response;
         }
 
         //convert response to json and respond
@@ -258,9 +278,10 @@ class CILogViewer {
     /**
      * This function will extract the logs in the supplied
      * fileName
-     * @param $fileNameInBase64
-     * @param $logs
+     * @param      $fileNameInBase64
+     * @param bool $singleLine
      * @return array|null
+     * @internal param $logs
      */
     private function processLogsForAPI($fileNameInBase64, $singleLine = false) {
 
@@ -336,7 +357,8 @@ class CILogViewer {
      * elements of the array is the individual lines of the files
      * otherwise, it will return all file content as a single string with each line ending
      * in line break character "\n"
-     * @param $fileName
+     * @param      $fileName
+     * @param bool $singleLine
      * @return bool|string
      */
     private function getLogsForAPI($fileName, $singleLine = false) {
@@ -359,7 +381,7 @@ class CILogViewer {
     private function getFiles($basename = true)
     {
 
-        $files = glob($this->log_path_pattern);
+        $files = glob($this->logFilePattern);
 
         $files = array_reverse($files);
         $files = array_filter($files, 'is_file');
@@ -377,13 +399,13 @@ class CILogViewer {
      * files
      * The array will containt the base64encoded name
      * as well as the real name of the fiile
-     * @param bool $appendURL
      * @return array
+     * @internal param bool $appendURL
      * @internal param bool $basename
      */
     private function getFilesBase64Encoded() {
 
-        $files = glob(self::FILE_PATH_PATTERN);
+        $files = glob($this->fullLogFilePath);
 
         $files = array_reverse($files);
         $files = array_filter($files, 'is_file');
@@ -407,10 +429,10 @@ class CILogViewer {
     private function deleteFiles($fileName) {
 
         if($fileName == "all") {
-            array_map("unlink", glob($this->log_path_pattern));
+            array_map("unlink", glob($this->fullLogFilePath));
         }
         else {
-            unlink($this->log_file_path . $fileName);
+            unlink($this->logFolderPath . "/" . $fileName);
         }
         return;
     }
@@ -420,7 +442,7 @@ class CILogViewer {
      * @param $fileName
      * */
     private function downloadFile($fileName) {
-        $file = $this->log_file_path . $fileName;
+        $file = $this->logFolderPath . "/" . $fileName;
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -439,7 +461,9 @@ class CILogViewer {
      * This function will take in the raw file
      * name as sent from the browser/client
      * and append the LOG_FOLDER_PREFIX and decode it from base64
-     * @param $fileName
+     * @param $fileNameInBase64
+     * @return null|string
+     * @internal param $fileName
      */
     private function prepareRawFileName($fileNameInBase64) {
 
@@ -447,7 +471,7 @@ class CILogViewer {
 
         //let's determine what the current log file is
         if(!is_null($fileNameInBase64) && !empty($fileNameInBase64)) {
-            $currentFile = self::LOG_FOLDER_PREFIX . "/". base64_decode($fileNameInBase64);
+            $currentFile = $this->logFolderPath . "/". base64_decode($fileNameInBase64);
         }
         else {
             $currentFile = null;

@@ -66,7 +66,7 @@
             <?php if(is_null($logs)): ?>
                 <div>
                     <br><br>
-                    <strong>Log file > 50M, please download it.</strong>
+                    <strong>Log file > 50MB, please download it.</strong>
                     <br><br>
                 </div>
             <?php else: ?>
