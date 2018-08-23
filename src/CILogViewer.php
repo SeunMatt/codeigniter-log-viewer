@@ -37,7 +37,14 @@ class CILogViewer {
     //this is the pattern to pick all log files in the $logFilePath
     private $logFilePattern;
 
-    private $fullLogFilePath = ""; //this is a combination of the LOG_FOLDER_PATH and LOG_FILE_PATTERN
+    //this is a combination of the LOG_FOLDER_PATH and LOG_FILE_PATTERN
+    private $fullLogFilePath = "";
+
+    //these are the config keys expected in the config.php
+    const LOG_FILE_PATTERN_CONFIG_KEY = "clv_log_file_pattern";
+    const LOG_FOLDER_PATH_CONFIG_KEY = "clv_log_folder_path";
+
+
 
     /**
      * Here we define the paths for the view file
@@ -84,8 +91,8 @@ class CILogViewer {
         $this->CI = &get_instance();
 
         //configure the log folder path and the file pattern for all the logs in the folder
-        $this->logFolderPath =  !is_null($this->CI->config->item('log_folder_path')) ? rtrim($this->CI->config->item('log_folder_path'), "/") : APPPATH . "/logs";
-        $this->logFilePattern = !is_null($this->CI->config->item('log_file_pattern')) ? $this->CI->config->item('log_file_pattern') : "log-*.php";
+        $this->logFolderPath =  !is_null($this->CI->config->item(self::LOG_FOLDER_PATH_CONFIG_KEY)) ? rtrim($this->CI->config->item(self::LOG_FOLDER_PATH_CONFIG_KEY), "/") : APPPATH . "/logs";
+        $this->logFilePattern = !is_null($this->CI->config->item(self::LOG_FILE_PATTERN_CONFIG_KEY)) ? $this->CI->config->item(self::LOG_FILE_PATTERN_CONFIG_KEY) : "log-*.php";
 
         //concatenate to form Full Log Path
         $this->fullLogFilePath = $this->logFolderPath . "/" . $this->logFilePattern;
@@ -381,7 +388,7 @@ class CILogViewer {
     private function getFiles($basename = true)
     {
 
-        $files = glob($this->logFilePattern);
+        $files = glob($this->fullLogFilePath);
 
         $files = array_reverse($files);
         $files = array_filter($files, 'is_file');
