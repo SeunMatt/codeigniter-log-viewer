@@ -65,7 +65,9 @@
         <div class="col-sm-9 col-md-10 table-container">
             <?php if(is_null($logs)): ?>
                 <div>
-                    Log file >50M, please download it.
+                    <br><br>
+                    <strong>Log file > 50M, please download it.</strong>
+                    <br><br>
                 </div>
             <?php else: ?>
                 <table id="table-log" class="table table-striped">
