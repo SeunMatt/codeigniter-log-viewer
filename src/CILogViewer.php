@@ -151,7 +151,7 @@ class CILogViewer {
         //just trigger a download of the file
         //otherwise process its content as log
 
-        if(!is_null($currentFile)) {
+        if(!is_null($currentFile) && file_exists($currentFile)) {
 
             $fileSize = filesize($currentFile);
 
