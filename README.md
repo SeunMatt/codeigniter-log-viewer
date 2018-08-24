@@ -53,6 +53,25 @@ $route['logs'] = "logViewerController/index";
 And that's all! If you visit `/logs` on your browser 
 you should see all the logs that are in *application/logs* folder and their content
 
+
+Configuration
+==============
+
+The folder path for log files can be configured by adding `clv_log_folder_path` to CodeIgniter's `config.php` file
+
+e.g.
+
+`$config["clv_log_folder_path"] = APPPATH . "logs";` 
+
+The file pattern for matching all the log files in the log folder can be configured by adding
+ 
+ `clv_log_file_pattern` to CodeIgniter's `config.php` file
+
+e.g.
+
+`$config["clv_log_file_pattern"] = "log-*.php";`
+
+
 Using codeigniter-log-viewer in an API-oriented environment
 ==========================================================
 
@@ -133,7 +152,7 @@ Response:
  
  Query:
  
- `logs?api=view&f=bG9nLTIwMTgtMDEtMTkucGhw&sline=true`
+ `/logs?api=view&f=bG9nLTIwMTgtMDEtMTkucGhw&sline=true`
  
  Response:
  
@@ -159,7 +178,7 @@ Response:
 
 Query:
 
- `logs?api=view&f=bG9nLTIwMTgtMDEtMTkucGhw&sline=false` OR `logs?api=view&f=bG9nLTIwMTgtMDEtMTkucGhw` 
+ `/logs?api=view&f=bG9nLTIwMTgtMDEtMTkucGhw&sline=false` OR `logs?api=view&f=bG9nLTIwMTgtMDEtMTkucGhw` 
 
 Response:
  
@@ -174,11 +193,18 @@ Response:
 }
 ```
  
+Query:
+
+`/logs?api=delete&f=bG9nLTIwMTgtMDEtMTkucGhw` will delete a single log file. The **f** parameter is the base64 encoded name of the file
+and can be obtained from the view api above.
+
+Query: 
+
+`/logs?api=delete&f=all` will delete all log files in the configured folder path. Take note of the value for **f** which is **all**.
  
  **IF A FILE IS TOO LARGE (> 50MB), YOU CAN DOWNLOAD IT WITH THIS API QUERY `/logs?dl=bG9nLTIwMTgtMDEtMTcucGhw`**
  
  
-
 SECURITY NOTE
 =============
 It is **Highly Recommended** that you protect/secure the route for your logs. It should not be an open resource!
