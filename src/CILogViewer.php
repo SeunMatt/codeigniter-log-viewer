@@ -15,15 +15,15 @@ class CILogViewer {
     private $CI;
 
     private static $levelsIcon = [
-        'INFO' => 'glyphicon glyphicon-info-sign',
-        'ERROR' => 'glyphicon glyphicon-warning-sign',
-        'DEBUG' => 'glyphicon glyphicon-exclamation-sign',
+      'INFO' => 'glyphicon glyphicon-info-sign',
+      'ERROR' => 'glyphicon glyphicon-warning-sign',
+      'DEBUG' => 'glyphicon glyphicon-exclamation-sign',
     ];
 
     private static $levelClasses = [
-        'INFO' => 'info',
-        'ERROR' => 'danger',
-        'DEBUG' => 'warning',
+      'INFO' => 'info',
+      'ERROR' => 'danger',
+      'DEBUG' => 'warning',
     ];
 
 
@@ -49,7 +49,7 @@ class CILogViewer {
     /**
      * Here we define the paths for the view file
      * that's used by the library to present logs on the UI
-    */
+     */
     private $LOG_VIEW_FILE_FOLDER = "";
     private $LOG_VIEW_FILE_NAME = "logs.php";
     private $LOG_VIEW_FILE_PATH = "";
@@ -69,6 +69,7 @@ class CILogViewer {
     private const API_LOG_STYLE_QUERY_PARAM = "sline";
     private const API_CMD_LIST = "list";
     private const API_CMD_VIEW = "view";
+    private const API_CMD_DELETE = "delete";
 
 
     public function __construct() {
@@ -201,6 +202,44 @@ class CILogViewer {
                 $response["logs"] = $logs;
             }
         }
+        else if($command === self::API_CMD_DELETE) {
+
+            $file = $this->CI->input->get(self::API_FILE_QUERY_PARAM);
+
+            if(is_null($file)) {
+                $response["status"] = false;
+                $response["error"]["message"] = "NULL value is not allowed for file param";
+                $response["error"]["code"] = 400;
+            }
+            else {
+
+                //decode file if necessary
+                $fileExists = false;
+
+                if($file !== "all") {
+                    $file = base64_decode($file);
+                    $fileExists = file_exists($this->logFolderPath . "/" . $file);
+                }
+                else {
+                    //check if the directory exists
+                    $fileExists = file_exists($this->logFolderPath);
+                }
+
+
+                if($fileExists) {
+                    $this->deleteFiles($file);
+                    $response["status"] = true;
+                    $response["message"] = "File [" . $file . "] deleted";
+                }
+                else {
+                    $response["status"] = false;
+                    $response["error"]["message"] = "File does not exist";
+                    $response["error"]["code"] = 404;
+                }
+
+
+            }
+        }
         else {
             $response["status"] = false;
             $response["error"]["message"] = "Unsupported Query Command [" . $command . "]";
@@ -243,10 +282,10 @@ class CILogViewer {
                 //this is actually the start of a new log and not just another line from previous log
                 $level = $this->getLogLevel($logLineStart);
                 $data = [
-                    "level" => $level,
-                    "date" => $this->getLogDate($logLineStart),
-                    "icon" => self::$levelsIcon[$level],
-                    "class" => self::$levelClasses[$level],
+                  "level" => $level,
+                  "date" => $this->getLogDate($logLineStart),
+                  "icon" => self::$levelsIcon[$level],
+                  "class" => self::$levelClasses[$level],
                 ];
 
                 if(strlen($log) > self::MAX_STRING_LENGTH) {
