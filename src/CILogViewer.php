@@ -50,9 +50,9 @@ class CILogViewer {
      * Here we define the paths for the view file
      * that's used by the library to present logs on the UI
     */
-    const LOG_VIEW_FILE_FOLDER = APPPATH . "/views/cilogviewer";
-    const LOG_VIEW_FILE_NAME = "logs.php";
-    const LOG_VIEW_FILE_PATH = self::LOG_VIEW_FILE_FOLDER . "/" . self::LOG_VIEW_FILE_NAME;
+    private $LOG_VIEW_FILE_FOLDER = "";
+    private $LOG_VIEW_FILE_NAME = "logs.php";
+    private $LOG_VIEW_FILE_PATH = "";
 
     //this is the name of the view file passed to CI load->view()
     const CI_LOG_VIEW_FILE_PATH = "cilogviewer/logs";
@@ -91,19 +91,21 @@ class CILogViewer {
         $this->CI = &get_instance();
 
         //configure the log folder path and the file pattern for all the logs in the folder
-        $this->logFolderPath =  !is_null($this->CI->config->item(self::LOG_FOLDER_PATH_CONFIG_KEY)) ? rtrim($this->CI->config->item(self::LOG_FOLDER_PATH_CONFIG_KEY), "/") : APPPATH . "/logs";
+        $this->logFolderPath =  !is_null($this->CI->config->item(self::LOG_FOLDER_PATH_CONFIG_KEY)) ? rtrim($this->CI->config->item(self::LOG_FOLDER_PATH_CONFIG_KEY), "/") : rtrim(APPPATH, "/") . "/logs";
         $this->logFilePattern = !is_null($this->CI->config->item(self::LOG_FILE_PATTERN_CONFIG_KEY)) ? $this->CI->config->item(self::LOG_FILE_PATTERN_CONFIG_KEY) : "log-*.php";
 
         //concatenate to form Full Log Path
         $this->fullLogFilePath = $this->logFolderPath . "/" . $this->logFilePattern;
 
         //create the view file so that CI can find it
-        if(!file_exists(self::LOG_VIEW_FILE_PATH)) {
+        $this->LOG_VIEW_FILE_FOLDER = rtrim(APPPATH, "/") . "/views/cilogviewer";
+        $this->LOG_VIEW_FILE_PATH = rtrim($this->LOG_VIEW_FILE_FOLDER) . "/" . $this->LOG_VIEW_FILE_NAME;
+        if(!file_exists($this->LOG_VIEW_FILE_PATH)) {
 
-            if(!is_dir(self::LOG_VIEW_FILE_FOLDER))
-                mkdir(self::LOG_VIEW_FILE_FOLDER);
+            if(!is_dir($this->LOG_VIEW_FILE_FOLDER))
+                mkdir($this->LOG_VIEW_FILE_FOLDER);
 
-            file_put_contents(self::LOG_VIEW_FILE_PATH, file_get_contents(self::LOG_VIEW_FILE_NAME, FILE_USE_INCLUDE_PATH));
+            file_put_contents($this->LOG_VIEW_FILE_PATH, file_get_contents($this->LOG_VIEW_FILE_NAME, FILE_USE_INCLUDE_PATH));
         }
     }
 
@@ -473,8 +475,6 @@ class CILogViewer {
      * @internal param $fileName
      */
     private function prepareRawFileName($fileNameInBase64) {
-
-        log_message("error", "raw file name : " . $fileNameInBase64);
 
         //let's determine what the current log file is
         if(!is_null($fileNameInBase64) && !empty($fileNameInBase64)) {
