@@ -3,7 +3,7 @@ CodeIgniter Log Viewer
 
 [![Latest Stable Version](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/v/stable)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![Total Downloads](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/downloads)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![License](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/license)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) 
 
-This is a simple Log Viewer for viewing CodeIgniter logs in the browser or via API calls with JSON response
+This is a simple Log Viewer for viewing CodeIgniter logs in the browser or via API calls (that returns a JSON response)
 
 This project is inspired by the [laravel-log-viewer project](https://github.com/rap2hpoutre/laravel-log-viewer).
 
@@ -57,32 +57,27 @@ you should see all the logs that are in *application/logs* folder and their cont
 Configuration
 ==============
 
-The folder path for log files can be configured by adding `clv_log_folder_path` to CodeIgniter's `config.php` file
-
-e.g.
+- The folder path for log files can be configured by adding `clv_log_folder_path` to CodeIgniter's `config.php` file e.g.
 
 `$config["clv_log_folder_path"] = APPPATH . "logs";` 
 
-The file pattern for matching all the log files in the log folder can be configured by adding
- 
- `clv_log_file_pattern` to CodeIgniter's `config.php` file
-
-e.g.
+- The file pattern for matching all the log files in the log folder can be configured by adding
+ `clv_log_file_pattern` to CodeIgniter's `config.php` file e.g.
 
 `$config["clv_log_file_pattern"] = "log-*.php";`
 
 
-Using codeigniter-log-viewer in an API-oriented environment
-==========================================================
+Viewing Log Files via API Calls
+===============================
 
-If you're developing a CodeIgniter based API Service where interactions is via API calls, this library can still be used.
+If you're developing an API Service, powered by CodeIgniter, this library can still be used to view your log files.
 
 Controller Setup
 ----------------
 **The setup is the same as that mentioned above:** 
  - Create a Controller e.g. `ApiLogViewerController.php`, 
  - Create a function e.g. `index()`
- - In the function call `echo $this->logViewer->showLogs();`
+ - In the function, call `echo $this->logViewer->showLogs();`
  - Finally, map your controller function to a route.
  
  API Commands
@@ -118,10 +113,7 @@ Response:
  
  - `/logs?api=view&f=bG9nLTIwMTgtMDEtMTcucGhw` will return the logs contained in the log file specified by the `f` parameter. 
  
- The value of the `f` (f stands for file) is the base64 encoded format of the log file name. 
- 
- It is obtained from the `/logs?api=list` API call. 
- 
+ The value of the `f` (*f stands for file*) is the base64 encoded format of the log file name. It is obtained from the `/logs?api=list` API call. 
  A list of all available log files is also returned.
  
  Response:
@@ -174,7 +166,7 @@ Response:
 ```
  
  
- When it's `false` (**Default**), the logs are returned in an array:
+ When it's `false` (**Default**), the logs are returned in as an array, where each element is a line in the log file:
 
 Query:
 
@@ -200,14 +192,14 @@ and can be obtained from the view api above.
 
 Query: 
 
-`/logs?api=delete&f=all` will delete all log files in the configured folder path. Take note of the value for **f** which is **all**.
+`/logs?api=delete&f=all` will delete all log files in the configured folder path. Take note of the value for **f** which is the literal '**all**'.
  
  **IF A FILE IS TOO LARGE (> 50MB), YOU CAN DOWNLOAD IT WITH THIS API QUERY `/logs?dl=bG9nLTIwMTgtMDEtMTcucGhw`**
  
  
 SECURITY NOTE
 =============
-It is **Highly Recommended** that you protect/secure the route for your logs. It should not be an open resource!
+**It is Highly Recommended that you protect/secure the route for your logs. It should not be an open resource!**
 
 
 Contributions
@@ -217,7 +209,7 @@ Contributions
 
 Found a bug? Kindly create an issue for it. 
 
-Want to contribute? Submit your pull-request
+Want to contribute? Submit your pull-request(s)
 
 Remember to :star: star the repo and share with friends
 
