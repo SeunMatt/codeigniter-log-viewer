@@ -14,6 +14,10 @@ A typical log view looks like this:
 Usage
 =====
 
+Requirement
+-----------
+- PHP >= 7.1
+
 Composer Installation
 ---------------------
 Execute:

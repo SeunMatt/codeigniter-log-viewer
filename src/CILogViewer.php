@@ -15,15 +15,15 @@ class CILogViewer {
     private $CI;
 
     private static $levelsIcon = [
-      'INFO' => 'glyphicon glyphicon-info-sign',
-      'ERROR' => 'glyphicon glyphicon-warning-sign',
-      'DEBUG' => 'glyphicon glyphicon-exclamation-sign',
+        'INFO' => 'glyphicon glyphicon-info-sign',
+        'ERROR' => 'glyphicon glyphicon-warning-sign',
+        'DEBUG' => 'glyphicon glyphicon-exclamation-sign',
     ];
 
     private static $levelClasses = [
-      'INFO' => 'info',
-      'ERROR' => 'danger',
-      'DEBUG' => 'warning',
+        'INFO' => 'info',
+        'ERROR' => 'danger',
+        'DEBUG' => 'warning',
     ];
 
 
@@ -120,15 +120,20 @@ class CILogViewer {
      * */
     public function showLogs() {
 
+
         if(!is_null($this->CI->input->get("del"))) {
             $this->deleteFiles(base64_decode($this->CI->input->get("del")));
             redirect($this->CI->uri->uri_string());
             return;
         }
 
-        if(!is_null($this->CI->input->get("dl"))) {
-            $this->downloadFile(base64_decode($this->CI->input->get("dl")));
-            return;
+        //process download of log file command
+        //if the supplied file exists, then perform download
+        //otherwise, just ignore which will resolve to page reloading
+        $dlFile = $this->CI->input->get("dl");
+        if(!is_null($dlFile) && file_exists($this->logFolderPath . "/" . basename(base64_decode($dlFile))) ) {
+            $file = $this->logFolderPath . "/" . basename(base64_decode($dlFile));
+            $this->downloadFile($file);
         }
 
         if(!is_null($this->CI->input->get(self::API_QUERY_PARAM))) {
@@ -143,7 +148,7 @@ class CILogViewer {
 
         //let's determine what the current log file is
         if(!is_null($fileName)) {
-            $currentFile = $this->logFolderPath . "/" . base64_decode($fileName);
+            $currentFile = $this->logFolderPath . "/" . basename(base64_decode($fileName));
         }
         else if(is_null($fileName) && !empty($files)) {
             $currentFile = $this->logFolderPath . "/" . $files[0];
@@ -218,7 +223,7 @@ class CILogViewer {
                 $fileExists = false;
 
                 if($file !== "all") {
-                    $file = base64_decode($file);
+                    $file = basename(base64_decode($file));
                     $fileExists = file_exists($this->logFolderPath . "/" . $file);
                 }
                 else {
@@ -283,10 +288,10 @@ class CILogViewer {
                 //this is actually the start of a new log and not just another line from previous log
                 $level = $this->getLogLevel($logLineStart);
                 $data = [
-                  "level" => $level,
-                  "date" => $this->getLogDate($logLineStart),
-                  "icon" => self::$levelsIcon[$level],
-                  "class" => self::$levelClasses[$level],
+                    "level" => $level,
+                    "date" => $this->getLogDate($logLineStart),
+                    "icon" => self::$levelsIcon[$level],
+                    "class" => self::$levelClasses[$level],
                 ];
 
                 if(strlen($log) > self::MAX_STRING_LENGTH) {
@@ -481,28 +486,27 @@ class CILogViewer {
             array_map("unlink", glob($this->fullLogFilePath));
         }
         else {
-            unlink($this->logFolderPath . "/" . $fileName);
+            unlink($this->logFolderPath . "/" . basename($fileName));
         }
         return;
     }
 
     /*
      * Download a particular file to local disk
-     * @param $fileName
+     * This should only be called if the file exists
+     * hence, the file exist check has ot be done by the caller
+     * @param $fileName the complete file path
      * */
-    private function downloadFile($fileName) {
-        $file = $this->logFolderPath . "/" . $fileName;
-        if (file_exists($file)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($file).'"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
-            readfile($file);
-            exit;
-        }
+    private function downloadFile($file) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
     }
 
 
@@ -518,7 +522,7 @@ class CILogViewer {
 
         //let's determine what the current log file is
         if(!is_null($fileNameInBase64) && !empty($fileNameInBase64)) {
-            $currentFile = $this->logFolderPath . "/". base64_decode($fileNameInBase64);
+            $currentFile = $this->logFolderPath . "/". basename(base64_decode($fileNameInBase64));
         }
         else {
             $currentFile = null;
