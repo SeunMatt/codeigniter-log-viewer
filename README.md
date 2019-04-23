@@ -38,6 +38,7 @@ A typical Controller *(LogViewerController.php)* will have the following content
 private $logViewer;
 
 public function __construct() {
+    parent::__construct(); 
     $this->logViewer = new \CILogViewer\CILogViewer();
     //...
 }
