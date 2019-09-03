@@ -1,6 +1,9 @@
 CHANGELOG
 ===========
 
+V1.1.2
+-------
+- Fix issue [#13](https://github.com/SeunMatt/codeigniter-log-viewer/issues/13) and improve regex patterns
 
 V1.1.1
 -------
