@@ -15,21 +15,23 @@ class CILogViewer {
     private $CI;
 
     private static $levelsIcon = [
-        'INFO' => 'glyphicon glyphicon-info-sign',
+        'INFO'  => 'glyphicon glyphicon-info-sign',
         'ERROR' => 'glyphicon glyphicon-warning-sign',
         'DEBUG' => 'glyphicon glyphicon-exclamation-sign',
+        'ALL'   => 'glyphicon glyphicon-minus',
     ];
 
     private static $levelClasses = [
-        'INFO' => 'info',
+        'INFO'  => 'info',
         'ERROR' => 'danger',
         'DEBUG' => 'warning',
+        'ALL'   => 'muted',
     ];
 
 
-    const LOG_LINE_START_PATTERN = "/((INFO)|(ERROR)|(DEBUG)|(ALL))[\s-\d:]+(-->)/";
-    const LOG_DATE_PATTERN = "/(\d{4,}-[\d-:]{2,})\s([\d:]{2,})/";
-    const LOG_LEVEL_PATTERN = "/^((ERROR)|(INFO)|(DEBUG))/";
+    const LOG_LINE_START_PATTERN = "/((INFO)|(ERROR)|(DEBUG)|(ALL))[\s-\d:\.\/]+(-->)/";
+    const LOG_DATE_PATTERN = ["/^((ERROR)|(INFO)|(DEBUG)|(ALL))\s-\s/", "/\s(-->)/"];
+    const LOG_LEVEL_PATTERN = "/^((ERROR)|(INFO)|(DEBUG)|(ALL))/";
 
     //this is the path (folder) on the system where the log files are stored
     private $logFolderPath;
@@ -294,11 +296,13 @@ class CILogViewer {
                     "class" => self::$levelClasses[$level],
                 ];
 
-                if(strlen($log) > self::MAX_STRING_LENGTH) {
-                    $data['content'] = substr($log, 0, self::MAX_STRING_LENGTH);
-                    $data["extra"] = substr($log, (self::MAX_STRING_LENGTH + 1));
+                $logMessage = preg_replace(self::LOG_LINE_START_PATTERN, '', $log);
+
+                if(strlen($logMessage) > self::MAX_STRING_LENGTH) {
+                    $data['content'] = substr($logMessage, 0, self::MAX_STRING_LENGTH);
+                    $data["extra"] = substr($logMessage, (self::MAX_STRING_LENGTH + 1));
                 } else {
-                    $data["content"] = $log;
+                    $data["content"] = $logMessage;
                 }
 
                 array_push($superLog, $data);
@@ -376,8 +380,7 @@ class CILogViewer {
     }
 
     private function getLogDate($logLineStart) {
-        preg_match(self::LOG_DATE_PATTERN, $logLineStart, $matches);
-        return $matches[0];
+        return preg_replace(self::LOG_DATE_PATTERN, '', $logLineStart);
     }
 
     private function getLogLineStart($logLine) {
