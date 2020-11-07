@@ -1,11 +1,9 @@
-CodeIgniter Log Viewer
+CodeIgniter 4 Log Viewer
 =======================
 
-[![Latest Stable Version](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/v/stable)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![Total Downloads](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/downloads)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![License](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/license)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) 
+This is a simple Log Viewer for viewing CodeIgniter 4 logs in the browser or via API calls (that returns a JSON response)
 
-This is a simple Log Viewer for viewing CodeIgniter logs in the browser or via API calls (that returns a JSON response)
-
-This project is inspired by the [laravel-log-viewer project](https://github.com/rap2hpoutre/laravel-log-viewer).
+This project is a fork of [Codeigniter 3 Log viewer](https://github.com/SeunMatt/codeigniter-log-viewer) by SeunMat
 
 A typical log view looks like this:
 
@@ -23,7 +21,7 @@ Composer Installation
 Execute:
 
 ```
-composer require seunmatt/codeigniter-log-viewer
+composer require savioret/codeigniter-log-viewer
 ```
 
 Controller Integration for Browser Display
@@ -49,10 +47,10 @@ public function index() {
 }
 ```
 
-Then the route *(application/config/routes.php)* can be configured thus:
+Then the route *(app/Config/Routes.php)* can be configured thus:
 
 ```php
-$route['logs'] = "logViewerController/index";
+$routes->add('logs', "logViewerController::index");
 ```
 
 And that's all! If you visit `/logs` on your browser 
@@ -207,24 +205,11 @@ SECURITY NOTE
 **It is Highly Recommended that you protect/secure the route for your logs. It should not be an open resource!**
 
 
-Contributions
-=============
-
-**Love this library? You can support by [buying me a coffee](http://wallet.ng/pay/ossmatt)** :coffee:
-
-Found a bug? Kindly create an issue for it. 
-
-Want to contribute? Submit your pull-request(s)
-
-Remember to :star: star the repo and share with friends
-
 Author
 ======
-Made with :heart: by [Seun Matt](https://smattme.com)
+Codeigniter 4 Log Viewer by Miguel Martinez
+Base on the Codeigniter 3 version by by [Seun Matt](https://smattme.com)
 
-CHANGELOG
-=========
-[Changelog](CHANGELOG.md)
 
 LICENSE
 =======
