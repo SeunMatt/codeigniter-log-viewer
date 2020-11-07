@@ -42,8 +42,7 @@ public function __construct() {
 }
 
 public function index() {
-    echo $this->logViewer->showLogs();
-    return;
+    return $this->logViewer->showLogs();
 }
 ```
 
