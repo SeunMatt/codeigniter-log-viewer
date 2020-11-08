@@ -12,17 +12,14 @@ A typical log view looks like this:
 Usage
 =====
 
-Requirement
+Requirements
 -----------
 - PHP >= 7.1
+- Codeigniter 4
 
 Composer Installation
 ---------------------
-Execute:
-
-```
-composer require savioret/codeigniter-log-viewer
-```
+* not available yet*
 
 Controller Integration for Browser Display
 ------------------------------------------
@@ -33,40 +30,53 @@ All that is required is to execute the `showLogs()` method in a Controller that 
 A typical Controller *(LogViewerController.php)* will have the following content:
 
 ```php
-private $logViewer;
+namespace App\Controllers;
+use CILogViewer\CILogViewer;
 
-public function __construct() {
-    parent::__construct(); 
-    $this->logViewer = new \CILogViewer\CILogViewer();
-    //...
-}
-
-public function index() {
-    return $this->logViewer->showLogs();
+class LogViewerController extends BaseController
+{
+    public function index() {
+        $logViewer = new CILogViewer();
+        return $this->logViewer->showLogs();
+    }
 }
 ```
 
-Then the route *(app/Config/Routes.php)* can be configured thus:
+Then the route `app/Config/Routes.php` can be configured like:
 
 ```php
 $routes->add('logs', "logViewerController::index");
 ```
 
 And that's all! If you visit `/logs` on your browser 
-you should see all the logs that are in *application/logs* folder and their content
+you should see all the logs that are in `writable/logs` folder and their content
 
 
 Configuration
 ==============
 
-- The folder path for log files can be configured by adding `clv_log_folder_path` to CodeIgniter's `config.php` file e.g.
+Configuration (optional) parameters can be set by adding `$logFolderPath` to a `CILogViewer` class in the CodeIgniter's `Config` folder.
 
-`$config["clv_log_folder_path"] = APPPATH . "logs";` 
+- The folder path for log files can be configured with the `$logFolderPath` config var.
 
-- The file pattern for matching all the log files in the log folder can be configured by adding
- `clv_log_file_pattern` to CodeIgniter's `config.php` file e.g.
+- The file pattern for matching all the log files in the log folder can be configured by adding `$logFilePattern` config var.
+- The name of the view that renders the logs page chan be cnahged using the  `$viewName` config var. Please note that this can be a route relative to your `View` path or a namespace route.
 
-`$config["clv_log_file_pattern"] = "log-*.php";`
+Example configuration file `app/Config/CILogViewer.php`:
+
+```php
+<?php
+namespace Config;
+
+use CodeIgniter\Config\BaseConfig;
+
+class CILogViewer extends BaseConfig {
+
+    public $logFolderPath = 'var/logs';
+    public $logFilePattern = 'log-*.php';
+    public $viewName = 'myLogViewer/log'
+}
+```
 
 
 Viewing Log Files via API Calls
@@ -206,8 +216,8 @@ SECURITY NOTE
 
 Author
 ======
-Codeigniter 4 Log Viewer by Miguel Martinez
-Base on the Codeigniter 3 version by by [Seun Matt](https://smattme.com)
+Codeigniter 4 Log Viewer by Miguel Martinez\
+Based on the Codeigniter 3 version by by [Seun Matt](https://smattme.com)
 
 
 LICENSE
