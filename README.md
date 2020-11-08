@@ -14,12 +14,12 @@ Usage
 
 Requirements
 -----------
-- PHP >= 7.1
+- PHP >= 7.2
 - Codeigniter 4
 
 Composer Installation
 ---------------------
-* not available yet*
+*not available yet*
 
 Controller Integration for Browser Display
 ------------------------------------------
@@ -60,14 +60,13 @@ Configuration (optional) parameters can be set by adding `$logFolderPath` to a `
 - The folder path for log files can be configured with the `$logFolderPath` config var.
 
 - The file pattern for matching all the log files in the log folder can be configured by adding `$logFilePattern` config var.
-- The name of the view that renders the logs page chan be cnahged using the  `$viewName` config var. Please note that this can be a route relative to your `View` path or a namespace route.
+- The name of the view that renders the logs page can be changed using the  `$viewName` config var. Please note that this can be a route relative to your `View` path or a namespace route.
 
 Example configuration file `app/Config/CILogViewer.php`:
 
 ```php
 <?php
 namespace Config;
-
 use CodeIgniter\Config\BaseConfig;
 
 class CILogViewer extends BaseConfig {
