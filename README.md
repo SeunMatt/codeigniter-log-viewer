@@ -70,8 +70,6 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 class CILogViewer extends BaseConfig {
-
-    public $logFolderPath = 'var/logs';
     public $logFilePattern = 'log-*.php';
     public $viewName = 'myLogViewer/log'
 }

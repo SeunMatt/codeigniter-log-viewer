@@ -24,7 +24,6 @@ class CILogViewer {
         'ALL'   => 'muted',
     ];
 
-
     const LOG_LINE_HEADER_PATTERN = '/^([A-Z]+)\s*\-\s*([\-\d]+\s+[\:\d]+)\s*\-\->\s*(.+)$/';
 
     //this is the path (folder) on the system where the log files are stored
@@ -43,11 +42,7 @@ class CILogViewer {
      *
      * @var string
      */
-    private $viewName = "CILogViewer\Views\logs";
-
-    //these are the config keys expected in the config.php
-    const LOG_FILE_PATTERN_CONFIG_KEY = "logFilePattern";
-    const LOG_FOLDER_PATH_CONFIG_KEY = "logFolderPath";
+    private $viewName = "App\ThirdParty\CILogViewer\Views\logs";
 
     const MAX_LOG_SIZE = 52428800; //50MB
     const MAX_STRING_LENGTH = 300; //300 chars
@@ -74,18 +69,22 @@ class CILogViewer {
      * @throws \Exception
      */
     private function init() {
-        $loggerConfig = config('Logger');
         $viewerConfig = config('CILogViewer');
-        if($viewerConfig && isset($viewerConfig->logFilePattern)) {
-            $this->logFilePattern = $viewerConfig->logFilePattern;
+
+        if($viewerConfig) {
+            if(isset($viewerConfig->viewPath)) {
+                $this->viewPath = $viewerConfig->viewPath;
+            }
+            if(isset($viewerConfig->logFilePattern)) {
+                $this->logFilePattern = $viewerConfig->logFilePattern;
+            }
         }
         //configure the log folder path and the file pattern for all the logs in the folder
+        $loggerConfig = config('Logger');
         if(isset($loggerConfig->path)) {
             $this->logFolderPath = $loggerConfig->path;
         }
-        if(isset($viewerConfig->viewPath)) {
-            $this->viewPath = $loggerConfig->viewPath;
-        }
+        
         //concatenate to form Full Log Path
         $this->fullLogFilePath = $this->logFolderPath . $this->logFilePattern;
     }
