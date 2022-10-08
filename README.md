@@ -49,7 +49,7 @@ class LogViewerController extends BaseController
 Then the route `app/Config/Routes.php` can be configured like:
 
 ```php
-$routes->add('logs', "logViewerController::index");
+$routes->add('logs', "LogViewerController::index");
 ```
 
 And that's all! If you visit `/logs` on your browser 

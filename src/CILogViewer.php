@@ -37,7 +37,7 @@ class CILogViewer {
 
     /**
      * Name of the view to pass to the renderer
-     * Note that for it allows namespaced views if your view is outside
+     * Note that it allows namespaced views if your view is outside
      * the View folder.
      *
      * @var string
