@@ -1,9 +1,9 @@
 {
-  "name": "savioret/codeigniter-log-viewer",
+  "name": "seunmatt/codeigniter-log-viewer",
   "description": "This is a simple Log Viewer for viewing Code Igniter 4 log files on the browser",
   "keywords": ["Code Igniter", "Code Igniter 4", "ci4", "Log Viewer", "PHP"],
   "license": "MIT",
-  "github": "https://github.com/savioret/codeigniter-log-viewer",
+  "github": "https://github.com/SeunMatt/codeigniter-log-viewer",
   "authors": [
     {
       "name": "Miguel Martinez",
