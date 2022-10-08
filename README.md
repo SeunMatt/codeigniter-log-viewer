@@ -59,7 +59,7 @@ you should see all the logs that are in `writable/logs` folder and their content
 Configuration
 ==============
 
-Configuration (optional) parameters can be set by adding `$logFolderPath` to a `CILogViewer` class in the CodeIgniter's `Config` folder.
+The package allows you to configure some of its parameters by creating a `CILogViewer` class in CodeIgniter's `Config` folder and then adding the respective class variables.
 
 - The folder path for log files can be configured with the `$logFolderPath` config var.
 
