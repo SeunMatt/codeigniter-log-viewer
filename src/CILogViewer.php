@@ -82,7 +82,7 @@ class CILogViewer {
         //configure the log folder path and the file pattern for all the logs in the folder
         if($viewerConfig) {
             if(isset($viewerConfig->viewName)) {
-                $this->viewName = $viewerConfig->viewPath;
+                $this->viewName = $viewerConfig->viewName;
             }
             if(isset($viewerConfig->logFilePattern)) {
                 $this->logFilePattern = $viewerConfig->logFilePattern;
