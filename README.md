@@ -1,5 +1,5 @@
-CodeIgniter 4 Log Viewer
-=======================
+CodeIgniter Log Viewer
+======================
 
 [![Latest Stable Version](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/v/stable)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![Total Downloads](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/downloads)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![License](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/license)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) 
 
@@ -13,6 +13,8 @@ A typical log view looks like this:
 
 Usage
 =====
+
+**For CodeIgniter 3, see this [reference guide](https://github.com/SeunMatt/codeigniter-log-viewer/wiki/CodeIgniter-3-Guide)**
 
 Requirements
 -----------
@@ -214,6 +216,9 @@ SECURITY NOTE
 =============
 **It is Highly Recommended that you protect/secure the route for your logs. It should not be an open resource!**
 
+Change Log
+==========
+[Change Log is available here](./CHANGELOG.md)
 
 Contributors
 ============
