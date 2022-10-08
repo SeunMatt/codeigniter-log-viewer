@@ -10,7 +10,7 @@ class CILogViewer {
 
     private static $levelsIcon = [
         'CRITICAL' => 'glyphicon glyphicon-warning-sign',
-        'NOTICE' => 'glyphicon glyphicon-error-sign',
+        'NOTICE' => 'glyphicon glyphicon-warning-sign',
         'WARNING' => 'glyphicon glyphicon-warning-sign',
         'ALERT' => 'glyphicon glyphicon-warning-sign',
         'INFO'  => 'glyphicon glyphicon-info-sign',

@@ -17,7 +17,7 @@ Usage
 Requirements
 -----------
 - PHP >= 7.2
-- Codeigniter 4
+- CodeIgniter 4
 
 Composer Installation
 ---------------------
@@ -74,8 +74,8 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 class CILogViewer extends BaseConfig {
-    public $logFilePattern = 'log-*.php';
-    public $viewName = 'myLogViewer/log'
+    public $logFilePattern = 'log-*.log';
+    public $viewName = 'logs'; //where logs exists in app/Views/logs.php
 }
 ```
 
@@ -215,10 +215,10 @@ SECURITY NOTE
 **It is Highly Recommended that you protect/secure the route for your logs. It should not be an open resource!**
 
 
-Author
-======
-Codeigniter 4 Log Viewer by Miguel Martinez\
-Based on the Codeigniter 3 version by by [Seun Matt](https://smattme.com)
+Contributors
+============
+- [Seun Matt](https://smattme.com)
+- [Miguel Martinez](https://github.com/savioret)
 
 
 LICENSE
