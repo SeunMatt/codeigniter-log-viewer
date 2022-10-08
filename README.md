@@ -1,9 +1,11 @@
 CodeIgniter 4 Log Viewer
 =======================
 
+[![Latest Stable Version](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/v/stable)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![Total Downloads](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/downloads)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![License](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/license)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) 
+
 This is a simple Log Viewer for viewing CodeIgniter 4 logs in the browser or via API calls (that returns a JSON response)
 
-This project is a fork of [Codeigniter 3 Log viewer](https://github.com/SeunMatt/codeigniter-log-viewer) by SeunMat
+This project is inspired by the [laravel-log-viewer project](https://github.com/rap2hpoutre/laravel-log-viewer).
 
 A typical log view looks like this:
 
@@ -19,7 +21,9 @@ Requirements
 
 Composer Installation
 ---------------------
-*not available yet*
+```
+composer require seunmatt/codeigniter-log-viewer
+```
 
 Controller Integration for Browser Display
 ------------------------------------------
