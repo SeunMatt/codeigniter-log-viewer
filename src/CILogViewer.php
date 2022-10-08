@@ -9,10 +9,14 @@ namespace CILogViewer;
 class CILogViewer {
 
     private static $levelsIcon = [
-        'CRITICAL' => 'glyphicon glyphicon-error-sign',
+        'CRITICAL' => 'glyphicon glyphicon-warning-sign',
+        'NOTICE' => 'glyphicon glyphicon-error-sign',
+        'WARNING' => 'glyphicon glyphicon-warning-sign',
+        'ALERT' => 'glyphicon glyphicon-warning-sign',
         'INFO'  => 'glyphicon glyphicon-info-sign',
         'ERROR' => 'glyphicon glyphicon-warning-sign',
         'DEBUG' => 'glyphicon glyphicon-exclamation-sign',
+        'EMERGENCY' => 'glyphicon glyphicon-warning-sign',
         'ALL'   => 'glyphicon glyphicon-minus',
     ];
 
@@ -21,6 +25,10 @@ class CILogViewer {
         'INFO'  => 'info',
         'ERROR' => 'danger',
         'DEBUG' => 'warning',
+        'NOTICE' => 'notice',
+        'WARNING' => 'warning',
+        'EMERGENCY' => 'emergency',
+        'ALERT' => 'alert',
         'ALL'   => 'muted',
     ];
 
