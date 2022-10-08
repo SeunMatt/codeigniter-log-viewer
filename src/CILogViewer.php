@@ -71,6 +71,7 @@ class CILogViewer {
     private function init() {
         $viewerConfig = config('CILogViewer');
 
+        //configure the log folder path and the file pattern for all the logs in the folder
         if($viewerConfig) {
             if(isset($viewerConfig->viewPath)) {
                 $this->viewPath = $viewerConfig->viewPath;
@@ -78,13 +79,11 @@ class CILogViewer {
             if(isset($viewerConfig->logFilePattern)) {
                 $this->logFilePattern = $viewerConfig->logFilePattern;
             }
+            if(isset($viewerConfig->logFolderPath)) {
+                $this->logFolderPath = $viewerConfig->logFolderPath;
+            }
         }
-        //configure the log folder path and the file pattern for all the logs in the folder
-        $loggerConfig = config('Logger');
-        if(isset($loggerConfig->path)) {
-            $this->logFolderPath = $loggerConfig->path;
-        }
-        
+
         //concatenate to form Full Log Path
         $this->fullLogFilePath = $this->logFolderPath . $this->logFilePattern;
     }
