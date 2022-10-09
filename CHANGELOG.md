@@ -1,6 +1,10 @@
 CHANGELOG
 ===========
 
+V2.0.0
+------
+- Added support for CodeIgniter 4 and deprecate support for CodeIgniter 3
+
 V1.1.2
 -------
 - Fix issue [#13](https://github.com/SeunMatt/codeigniter-log-viewer/issues/13) and improve regex patterns

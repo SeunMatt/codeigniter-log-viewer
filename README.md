@@ -1,5 +1,5 @@
 CodeIgniter Log Viewer
-=======================
+======================
 
 [![Latest Stable Version](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/v/stable)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![Total Downloads](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/downloads)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![License](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/license)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) 
 
@@ -14,14 +14,15 @@ A typical log view looks like this:
 Usage
 =====
 
-Requirement
+**For CodeIgniter 3, see this [reference guide](https://github.com/SeunMatt/codeigniter-log-viewer/wiki/CodeIgniter-3-Guide)**
+
+Requirements
 -----------
-- PHP >= 7.1
+- PHP >= 7.2
+- CodeIgniter 4
 
 Composer Installation
 ---------------------
-Execute:
-
 ```
 composer require seunmatt/codeigniter-log-viewer
 ```
@@ -35,41 +36,50 @@ All that is required is to execute the `showLogs()` method in a Controller that 
 A typical Controller *(LogViewerController.php)* will have the following content:
 
 ```php
-private $logViewer;
+namespace App\Controllers;
+use CILogViewer\CILogViewer;
 
-public function __construct() {
-    parent::__construct(); 
-    $this->logViewer = new \CILogViewer\CILogViewer();
-    //...
-}
-
-public function index() {
-    echo $this->logViewer->showLogs();
-    return;
+class LogViewerController extends BaseController
+{
+    public function index() {
+        $logViewer = new CILogViewer();
+        return $this->logViewer->showLogs();
+    }
 }
 ```
 
-Then the route *(application/config/routes.php)* can be configured thus:
+Then the route `app/Config/Routes.php` can be configured like:
 
 ```php
-$route['logs'] = "logViewerController/index";
+$routes->get('logs', "LogViewerController::index");
 ```
 
 And that's all! If you visit `/logs` on your browser 
-you should see all the logs that are in *application/logs* folder and their content
+you should see all the logs that are in `writable/logs` folder and their content
 
 
 Configuration
 ==============
 
-- The folder path for log files can be configured by adding `clv_log_folder_path` to CodeIgniter's `config.php` file e.g.
+The package allows you to configure some of its parameters by creating a `CILogViewer` class in CodeIgniter's `Config` folder and then adding the following variables:
 
-`$config["clv_log_folder_path"] = APPPATH . "logs";` 
+- The folder path for log files can be configured with the `$logFolderPath` config var.
 
-- The file pattern for matching all the log files in the log folder can be configured by adding
- `clv_log_file_pattern` to CodeIgniter's `config.php` file e.g.
+- The file pattern for matching all the log files in the log folder can be configured by adding `$logFilePattern` config var.
+- The name of the view that renders the logs page can be changed using the  `$viewName` config var. Please note that this can be a route relative to your `View` path or a namespace route.
 
-`$config["clv_log_file_pattern"] = "log-*.php";`
+Example configuration file `app/Config/CILogViewer.php`:
+
+```php
+<?php
+namespace Config;
+use CodeIgniter\Config\BaseConfig;
+
+class CILogViewer extends BaseConfig {
+    public $logFilePattern = 'log-*.log';
+    public $viewName = 'logs'; //where logs exists in app/Views/logs.php
+}
+```
 
 
 Viewing Log Files via API Calls
@@ -206,25 +216,19 @@ SECURITY NOTE
 =============
 **It is Highly Recommended that you protect/secure the route for your logs. It should not be an open resource!**
 
+Change Log
+==========
+[Change Log is available here](./CHANGELOG.md)
 
-Contributions
-=============
-
-**Love this library? You can support by [buying me a coffee](http://wallet.ng/pay/ossmatt)** :coffee:
-
-Found a bug? Kindly create an issue for it. 
-
-Want to contribute? Submit your pull-request(s)
-
-Remember to :star: star the repo and share with friends
 
 Author
 ======
-Made with :heart: by [Seun Matt](https://smattme.com)
+- [Seun Matt](https://smattme.com)
 
-CHANGELOG
-=========
-[Changelog](CHANGELOG.md)
+Contributors
+============
+- [Miguel Martinez](https://github.com/savioret)
+
 
 LICENSE
 =======
