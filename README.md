@@ -18,7 +18,7 @@ Usage
 
 Requirements
 -----------
-- PHP >= 7.2
+- PHP >= 7.4
 - CodeIgniter 4
 
 Composer Installation
