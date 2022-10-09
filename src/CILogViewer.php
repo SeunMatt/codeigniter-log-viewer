@@ -25,10 +25,10 @@ class CILogViewer {
         'INFO'  => 'info',
         'ERROR' => 'danger',
         'DEBUG' => 'warning',
-        'NOTICE' => 'notice',
+        'NOTICE' => 'info',
         'WARNING' => 'warning',
-        'EMERGENCY' => 'emergency',
-        'ALERT' => 'alert',
+        'EMERGENCY' => 'danger',
+        'ALERT' => 'warning',
         'ALL'   => 'muted',
     ];
 

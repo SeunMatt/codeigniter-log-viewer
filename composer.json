@@ -1,6 +1,6 @@
 {
   "name": "seunmatt/codeigniter-log-viewer",
-  "description": "This is a simple Log Viewer for viewing Code Igniter 4 log files on the browser",
+  "description": "This is a simple Log Viewer for viewing CodeIgniter log files on the browser",
   "keywords": ["Code Igniter", "Code Igniter 4", "ci4", "Log Viewer", "PHP"],
   "license": "MIT",
   "github": "https://github.com/SeunMatt/codeigniter-log-viewer",

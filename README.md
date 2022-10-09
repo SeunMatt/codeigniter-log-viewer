@@ -3,7 +3,7 @@ CodeIgniter Log Viewer
 
 [![Latest Stable Version](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/v/stable)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![Total Downloads](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/downloads)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) [![License](https://poser.pugx.org/seunmatt/codeigniter-log-viewer/license)](https://packagist.org/packages/seunmatt/codeigniter-log-viewer) 
 
-This is a simple Log Viewer for viewing CodeIgniter 4 logs in the browser or via API calls (that returns a JSON response)
+This is a simple Log Viewer for viewing CodeIgniter logs in the browser or via API calls (that returns a JSON response)
 
 This project is inspired by the [laravel-log-viewer project](https://github.com/rap2hpoutre/laravel-log-viewer).
 
@@ -51,7 +51,7 @@ class LogViewerController extends BaseController
 Then the route `app/Config/Routes.php` can be configured like:
 
 ```php
-$routes->add('logs', "LogViewerController::index");
+$routes->get('logs', "LogViewerController::index");
 ```
 
 And that's all! If you visit `/logs` on your browser 
@@ -61,7 +61,7 @@ you should see all the logs that are in `writable/logs` folder and their content
 Configuration
 ==============
 
-The package allows you to configure some of its parameters by creating a `CILogViewer` class in CodeIgniter's `Config` folder and then adding the respective class variables.
+The package allows you to configure some of its parameters by creating a `CILogViewer` class in CodeIgniter's `Config` folder and then adding the following variables:
 
 - The folder path for log files can be configured with the `$logFolderPath` config var.
 
@@ -220,9 +220,13 @@ Change Log
 ==========
 [Change Log is available here](./CHANGELOG.md)
 
+
+Author
+======
+- [Seun Matt](https://smattme.com)
+
 Contributors
 ============
-- [Seun Matt](https://smattme.com)
 - [Miguel Martinez](https://github.com/savioret)
 
 
