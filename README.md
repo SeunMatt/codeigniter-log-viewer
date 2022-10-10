@@ -43,7 +43,7 @@ class LogViewerController extends BaseController
 {
     public function index() {
         $logViewer = new CILogViewer();
-        return $this->logViewer->showLogs();
+        return $logViewer->showLogs();
     }
 }
 ```
