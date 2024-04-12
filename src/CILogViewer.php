@@ -109,7 +109,7 @@ class CILogViewer {
 
         if(!is_null($request->getGet("del"))) {
             $this->deleteFiles(base64_decode($request->getGet("del")));
-            $uri = \Config\Services::request()->uri->getPath();
+            $uri = \Config\Services::request()->getPath();
             return redirect()->to('/'.$uri);
         }
 
