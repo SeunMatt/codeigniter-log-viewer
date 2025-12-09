@@ -92,7 +92,7 @@
                                 <?php if (array_key_exists("extra", $log)): ?>
                                     <a class="pull-right expand btn btn-default btn-xs"
                                        data-display="stack<?= $key; ?>">
-                                        <span class="bi bi-search"></span>
+                                        <span class="bi bi-zoom-in"></span>
                                     </a>
                                 <?php endif; ?>
                                 <?= $log['content']; ?>
