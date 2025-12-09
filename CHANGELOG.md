@@ -1,6 +1,11 @@
 CHANGELOG
 ===========
 
+V2.0.2
+------
+- Fix bug with deleting single file. Changed to using `service('request')->getUri()`
+
+
 V2.0.0
 ------
 - Added support for CodeIgniter 4 and deprecate support for CodeIgniter 3
