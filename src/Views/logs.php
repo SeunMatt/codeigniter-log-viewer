@@ -7,9 +7,9 @@
     <title>CodeIgniter log viewer</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -47,7 +47,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <h1><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> CodeIgniter Log Viewer</h1>
+            <h1><span class="bi bi-calendar" aria-hidden="true"></span> CodeIgniter Log Viewer</h1>
             <p class="text-muted"><i>by <a href="https://github.com/SeunMatt" target="_blank">Seun Matt</a></i></p>
             <div class="list-group">
                 <?php if(empty($files)): ?>
@@ -92,7 +92,7 @@
                                 <?php if (array_key_exists("extra", $log)): ?>
                                     <a class="pull-right expand btn btn-default btn-xs"
                                        data-display="stack<?= $key; ?>">
-                                        <span class="glyphicon glyphicon-search"></span>
+                                        <span class="bi bi-zoom-in"></span>
                                     </a>
                                 <?php endif; ?>
                                 <?= $log['content']; ?>
@@ -112,15 +112,15 @@
             <div>
                 <?php if($currentFile): ?>
                     <a href="?dl=<?= base64_encode($currentFile); ?>">
-                        <span class="glyphicon glyphicon-download-alt"></span>
+                        <span class="bi bi-download"></span>
                         Download file
                     </a>
                     -
                     <a id="delete-log" href="?del=<?= base64_encode($currentFile); ?>"><span
-                                class="glyphicon glyphicon-trash"></span> Delete file</a>
+                                class="bi bi-trash"></span> Delete file</a>
                     <?php if(count($files) > 1): ?>
                         -
-                        <a id="delete-all-log" href="?del=<?= base64_encode("all"); ?>"><span class="glyphicon glyphicon-trash"></span> Delete all files</a>
+                        <a id="delete-all-log" href="?del=<?= base64_encode("all"); ?>"><span class="bi bi-trash"></span> Delete all files</a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
@@ -129,8 +129,8 @@
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 <script>
     $(document).ready(function () {
 

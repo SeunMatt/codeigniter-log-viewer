@@ -229,6 +229,7 @@ Contributors
 ============
 - [Miguel Martinez](https://github.com/savioret)
 - [Alberto](https://github.com/tardisblink)
+- [Deepak Sharma](https://github.com/deepaksharma208)
 
 
 LICENSE
