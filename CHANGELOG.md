@@ -1,6 +1,11 @@
 CHANGELOG
 ===========
 
+V2.0.3
+------
+- Updated the view to use Bootstrap 5 and Datatable 2
+
+
 V2.0.2
 ------
 - Fix bug with deleting single file. Changed to using `service('request')->getUri()`
