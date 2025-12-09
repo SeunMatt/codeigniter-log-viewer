@@ -47,7 +47,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <h1><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> CodeIgniter Log Viewer</h1>
+            <h1><span class="bi bi-calendar" aria-hidden="true"></span> CodeIgniter Log Viewer</h1>
             <p class="text-muted"><i>by <a href="https://github.com/SeunMatt" target="_blank">Seun Matt</a></i></p>
             <div class="list-group">
                 <?php if(empty($files)): ?>
@@ -92,7 +92,7 @@
                                 <?php if (array_key_exists("extra", $log)): ?>
                                     <a class="pull-right expand btn btn-default btn-xs"
                                        data-display="stack<?= $key; ?>">
-                                        <span class="glyphicon glyphicon-search"></span>
+                                        <span class="bi bi-search"></span>
                                     </a>
                                 <?php endif; ?>
                                 <?= $log['content']; ?>
@@ -112,15 +112,15 @@
             <div>
                 <?php if($currentFile): ?>
                     <a href="?dl=<?= base64_encode($currentFile); ?>">
-                        <span class="glyphicon glyphicon-download-alt"></span>
+                        <span class="bi bi-download"></span>
                         Download file
                     </a>
                     -
                     <a id="delete-log" href="?del=<?= base64_encode($currentFile); ?>"><span
-                                class="glyphicon glyphicon-trash"></span> Delete file</a>
+                                class="bi bi-trash"></span> Delete file</a>
                     <?php if(count($files) > 1): ?>
                         -
-                        <a id="delete-all-log" href="?del=<?= base64_encode("all"); ?>"><span class="glyphicon glyphicon-trash"></span> Delete all files</a>
+                        <a id="delete-all-log" href="?del=<?= base64_encode("all"); ?>"><span class="bi bi-trash"></span> Delete all files</a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
